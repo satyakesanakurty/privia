@@ -4,8 +4,13 @@
 function usb_disable ()
 {
 	#TODO: We need to check with an onpremise machine
-	echo "blacklist usb-storage" | sudo tee -a /etc/modprobe.d/blacklist.conf
-	sudo update-initramfs -u
+	not_blacklisted=$(cat /etc/modprobe.d/blacklist.conf | grep usb-storage)
+	#case when the usb-storage isn't blocked
+	if [ -z "$not_blacklisted" ]
+	then
+		 echo "blacklist usb-storage" | sudo tee -a /etc/modprobe.d/blacklist.conf
+        	 sudo update-initramfs -u
+	fi
 }
 
 #function that enables firewall and allows ports 53 and 22
@@ -50,7 +55,7 @@ function package_update()
 #function that disables the print access.
 function disable_print_screen ()
 {
-	sudo chmod -x /usr/bin/gnome-screenshot
+	#sudo chmod -x /usr/bin/gnome-screenshot
 }
 
 #main function
