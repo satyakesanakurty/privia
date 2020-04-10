@@ -13,15 +13,17 @@ function usb_disable ()
 	fi
 }
 
+
 #function that enables firewall and allows ports 53 and 22
 function firewall_enable ()
 {
-	#installing firewall if not installed
+	#case:1 --installing firewall if not installed
 	uninstalled=$(sudo dpkg --get-selections | grep ufw)
 	if [ -z "$uninstalled" ]
 	then
 		sudo apt install ufw -y	#install ufw firewall
-	#making firewall active if inactive
+
+	#case:2 --making firewall active if inactive
 	else 
 		status=$(sudo ufw status | head -1 | cut -d : -f 2) #storing the status of firewall
 		if [ $status = 'inactive' ]
@@ -29,7 +31,8 @@ function firewall_enable ()
 			sudo ufw reset		#deleting all the previous rules
 		fi
 	fi
-	#case when firewall is active an if ports other than 53 and 22 are open. 
+
+	#case:3 --when firewall is active an if ports other than 53 and 22 are open. 
 	open_ports=$(sudo ufw status | awk '{if(NR>4)print}' | cut -d " " -f 1 | grep -v 22 | grep -v 53)
 	if [ -z "$open_ports" ]
 		#do nothing if no ports are open other than 22 and 53
@@ -44,6 +47,7 @@ function firewall_enable ()
 	sudo ufw enable   #enabling the firewall
 }
 
+
 # updating and upgrading packages
 function package_update()
 {
@@ -52,11 +56,13 @@ function package_update()
 	sudo apt-get dist-upgrade
 }
 
+
 #function that disables the print access.
 function disable_print_screen ()
 {
 	#sudo chmod -x /usr/bin/gnome-screenshot
 }
+
 
 #main function
 function main ()
@@ -66,6 +72,7 @@ function main ()
 	package_update
 	disable_print_screen
 }
+
 
 #calling main
 main
