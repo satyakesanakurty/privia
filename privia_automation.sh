@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #function that disables usb
-function usb_disable ()
+usb_disable ()
 {
 	#TODO: We need to check with an onpremise machine
 	not_blacklisted=$(cat /etc/modprobe.d/blacklist.conf | grep usb-storage)
@@ -15,7 +15,7 @@ function usb_disable ()
 
 
 #function that enables firewall and allows ports 53 and 22
-function firewall_enable ()
+firewall_enable ()
 {
 	#case:1 --installing firewall if not installed
         uninstalled=$(sudo dpkg --get-selections | grep ufw)
@@ -51,7 +51,7 @@ function firewall_enable ()
 
 
 # updating and upgrading packages
-function package_update()
+package_update()
 {
 	sudo apt update -y
 	sudo apt upgrade -y
@@ -60,7 +60,7 @@ function package_update()
 
 
 #function that disables the print access.
-function disable_print_screen ()
+disable_print_screen ()
 {
 	#sudo chmod -x /usr/bin/gnome-screenshot
 	echo "doing nothing as of now"
@@ -68,7 +68,7 @@ function disable_print_screen ()
 
 
 #main function
-function main ()
+main ()
 {
 	usb_disable
 	firewall_enable
